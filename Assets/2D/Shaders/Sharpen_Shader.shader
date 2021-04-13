@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        [PerRendererData] _MainTex ("Texture", 2D) = "white" {}
         _TexSize("Texture Size", vector) = (256,256,0,0)
         _BlurOffset("Blur Offset", Range(1, 10)) = 1
     }

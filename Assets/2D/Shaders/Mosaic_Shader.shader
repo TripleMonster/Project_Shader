@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        [PerRendererData] _MainTex ("Texture", 2D) = "white" {}
         _SquareWidth ("Square Width", Range(1, 30)) = 8
         _TexSize ("Texture Size", vector) = (256,256,0,0)
     }
@@ -35,7 +35,7 @@
             float _SquareWidth;
             float4 _TexSize;
 
-            struct a2f 
+            struct a2v
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
@@ -49,7 +49,7 @@
                 fixed4 color : COLOR;
             };
 
-            v2f vert (a2f v)
+            v2f vert (a2v v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
