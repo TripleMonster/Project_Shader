@@ -3,7 +3,6 @@
     Properties
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        _Color ("Tint", Color) = (1,1,1,1)
         _Blur("Blur",Range(0,1)) = 0.01
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
     }
@@ -31,7 +30,7 @@
             #pragma multi_compile _ PIXELSNAP_ON
             #include "UnityCG.cginc"
  
-            struct appdata_t
+            struct a2v
             {
                 float4 vertex   : POSITION;
                 float4 color    : COLOR;
@@ -45,19 +44,17 @@
                 float2 texcoord  : TEXCOORD0;
             };
  
-            fixed4 _Color;
- 
-            v2f vert(appdata_t IN)
+            v2f vert(a2v v)
             {
-                v2f OUT;
-                OUT.vertex = UnityObjectToClipPos(IN.vertex);
-                OUT.texcoord = IN.texcoord;
-                OUT.color = IN.color * _Color;
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.texcoord = v.texcoord;
+                o.color = v.color;
                 #ifdef PIXELSNAP_ON
-                OUT.vertex = UnityPixelSnap (OUT.vertex);
+                o.vertex = UnityPixelSnap (v.vertex);
                 #endif
  
-                return OUT;
+                return o;
             }
  
             sampler2D _MainTex;
@@ -87,9 +84,9 @@
                 return color;
             }
  
-            fixed4 frag(v2f IN) : SV_Target
+            fixed4 frag(v2f i) : SV_Target
             {
-                fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
+                fixed4 c = SampleSpriteTexture (i.texcoord) * i.color;
                 c.rgb *= c.a;
                 return c;
             }
